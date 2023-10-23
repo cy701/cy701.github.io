@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>子页面标题</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            padding: 50px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #162447;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .navbar a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #1f4068;
+        }
+
+        .content {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="#prev-page-url" id="prev">PREV</a>
+    <a href="#next-page-url" id="next">NEXT</a>
+</div>
+
+<div class="content">
+    <!-- 你的内容将显示在这里 -->
+    <h1>子页面标题</h1>
+    <p>
+        <h3>4. 等待链表 - KiWaitListHead</h3>
+<p>等待链表（KiWaitListHead）是用于管理阻塞中的线程的数据结构。线程可以进入等待链表的状态，例如通过调用 <code>sleep()</code> 或 <code>WaitForSingleObject()</code> 函数。实际上，等待链表是存储正在等待某些条件或资源的线程的地方。</p>
+
+<p><strong>如何进入等待链表：</strong></p>
+<p>线程进入等待链表通常是因为它在执行过程中遇到了需要等待的情况，如等待某个事件的发生或等待某个资源的释放。这时，线程会主动将自己加入等待链表，等待满足条件后再被唤醒。</p>
+
+<p><strong>实际操作：</strong>要查看等待链表中的第一个线程，可以执行以下步骤：</p>
+<ol>
+    <li>使用 <code>dt ethread</code> 命令查看当前线程的信息。</li>
+    <li>从当前线程的地址中减去 <code>0x60</code>，这将导航到线程的进程（EPROCESS）结构体。</li>
+    <li>然后使用 <code>dt</code> 命令查看该进程的信息，其中包括 <code>ImageFileName</code>，该字段包含了进程的名称。</li>
+</ol>
+
+<p>线程通常处于三种状态之一：阻塞、正在运行或就绪。所有线程都可以在33个链表中找到自己的位置：一个等待链表和32个就绪链表，也称为调度链表。通过查看这些链表，操作系统可以有效地管理线程的调度和执行。</p>
+
+<p><code>dd KiDispatcherReadyListHead</code> 命令将显示存储了32个就绪链表头的地址，这些链表对应着不同的调度级别（0-31个级别优先级）。为什么需要32个就绪链表？因为操作系统需要根据线程的优先级来决定哪个线程应该被调度运行。</p>
+
+<p>正在运行的线程的信息通常存储在KPCR（Kernel Processor Control Region）中。</p>
+</div>
+
+    </p>
+</div>
+
+</body>
+</html>
