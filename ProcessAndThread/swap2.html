@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>子页面标题</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            padding: 50px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #162447;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .navbar a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #1f4068;
+        }
+
+        .content {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="#prev-page-url" id="prev">PREV</a>
+    <a href="#next-page-url" id="next">NEXT</a>
+</div>
+
+<div class="content">
+    <!-- 你的内容将显示在这里 -->
+    <h1>线程切换</h1>
+    <p>
+        <h3>6. Windows线程切换</h3>
+<p>在Windows操作系统中，线程切换涉及到一系列的API函数，其中包括 <code>KiswapThread</code>、<code>KiSwapContext</code> 和 <code>SwapContext</code>。大多数内核函数都会调用 <code>SwapContext</code> 来进行线程切换。线程切换通常有三种原因：</p>
+<ol>
+    <li>主动调用。</li>
+    <li>中断的两种情况：</li>
+    <ul>
+        <li>异常（软件触发）：例如缺页异常。</li>
+        <li>硬件中断：例如时钟中断（0x30）。时钟中断的发生一定会导致线程切换，因为操作系统需要调度不同的线程来执行。</li>
+    </ul>
+</ol>
+
+<h3>7. 终止一个正在执行的程序</h3>
+<p>终止一个正在执行的程序通常有两种情况：</p>
+<ol>
+    <li>异常（软件触发）：例如缺页异常。</li>
+    <li>中断：例如时钟中断（0x30）。时钟中断的发生一定会导致线程切换，因为操作系统需要调度不同的线程来执行。</li>
+</ol>
+
+<p>如果线程不主动调用线程切换API，并且使用CLI指令来关中断，并且不出现异常，那么该线程将永久占有CPU。</p>
+
+<h3>8. 时钟中断导致线程切换</h3>
+<p>时钟中断会导致线程切换的两种情况：</p>
+<ol>
+    <li>时间片到期：时间片由 <code>KPROCESS</code> 结构体中的 <code>ThreadQuantum</code> 决定。每次运行线程会减少3个单位的时间片，如果时间片减为0，表示时间片用完，操作系统将切换到下一个线程执行。</li>
+    <li>有备用线程：每个CPU都有一个备用线程，保存在 <code>KPCR</code> 中的 <code>nextThread</code>。即使时间片尚未用完，也可以切换到备用线程，从而实现线程调度。</li>
+</ol>
+
+<p>切换线程时，旧线程由 <code>KiReadyThread</code> 挂到就绪链表中，等待下一次调度。</p>
+
+<h3>9. Windows线程切换与TSS的关系</h3>
+<p>在Windows中，线程切换不需要切换TSS。每个CPU只有一个TSS，它存储了三个重要的信息：</p>
+<ol>
+    <li>替换了TSS中ESP0的值，存储了0环堆栈的地址。</li>
+    <li>存储了CR3（页目录表基址寄存器）的值。</li>
+    <li>存储了I/O权限位图（在Windows 2000之后的版本中不再使用）。</li>
+</ol>
+
+<h3>10. 线程切换与FS寄存器</h3>
+<p>线程切换时，需要考虑不同线程的FS寄存器。如果多个线程的FS寄存器选择子相同，那么它们如何实现一个FS指向多个TEB（线程环境块）？实际上，线程切换时，操作系统会将FS寄存器段描述符的基地址（由三部分组成）内容替换为新线程的TEB地址。</p>
+
+    </p>
+</div>
+
+</body>
+</html>
