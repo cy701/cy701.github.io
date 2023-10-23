@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>子页面标题</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            padding: 50px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #162447;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .navbar a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #1f4068;
+        }
+
+        .content {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="#prev-page-url" id="prev">PREV</a>
+    <a href="#next-page-url" id="next">NEXT</a>
+</div>
+
+<div class="content">
+    <!-- 你的内容将显示在这里 -->
+    <h1>模拟线程切换</h1>
+    <p>
+        <h3>5. 滴水模拟线程切换</h3>
+<p>为了使一个线程能够运行，必须具备以下两个关键要素：</p>
+<ol>
+    <li>有一个对应的 <strong>EThread</strong> 结构体。</li>
+    <li>具备初始化的值，包括堆栈和寄存器。</li>
+</ol>
+
+<p>在线程切换的过程中，栈的内容非常重要，因为它包含了线程执行的上下文信息。栈的内容可以总结为：</p>
+
+<blockquote>
+    <p>栈底到栈顶：实模式需要的内容 + 切任务的5个寄存器 + 下面写的东西</p>
+    <p>在切换之前，一些内容会被压入栈中，包括寄存器值和一些特殊信息，如线程结构体的自身指针和执行线程函数的入口函数。</p>
+    <p>入口函数将在切换执行时，通过 <code>ret</code> 指令弹出并加载到 <code>eip</code> 寄存器中执行。要执行这个入口函数，需要两个关键点：</p>
+    <ol>
+        <li>入口函数的地址（已经知道）。</li>
+        <li>函数参数（如何找到？）：通过 <code>ebp+8h</code> 可以访问线程的结构体首地址，而通过 <code>ebp+18h</code> 可以访问参数。</li>
+    </ol>
+</blockquote>
+
+<p>关键在于 <strong>SwitchContext</strong> 函数，它是线程切换的核心部分。</p>
+
+<p><strong>注意：</strong>在线程切换过程中，没有使用TSS（任务状态段）来保存寄存器，而是使用堆栈来保存和加载线程上下文。</p>
+
+    </p>
+</div>
+
+</body>
+</html>
