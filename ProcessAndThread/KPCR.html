@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPCR</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            padding: 50px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #162447;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .navbar a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #1f4068;
+        }
+
+        .content {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="#prev-page-url" id="prev">PREV</a>
+    <a href="#next-page-url" id="next">NEXT</a>
+</div>
+
+<div class="content">
+    <!-- 你的内容将显示在这里 -->
+    <h1>KPCR题</h1>
+    <p>
+        <h3>3. KPCR - CPU相关结构体</h3>
+<p>每个CPU都有一个KPCR（Kernel Processor Control Region），它在进入0环时起到关键作用。FS[0]寄存器指向KPCR，KPCR存储着GDT（全局描述符表）、IDT（中断描述符表）以及一些与线程相关的信息。</p>
+
+<pre><code>dt KPCR</code></pre>
+
+<h4>KPCR 结构体</h4>
+<ul>
+    <li>
+        <p><code>_NT_TIB</code>：KPCR中的第一个成员，其内容与 _NT_TIB 结构体中的内容相同。这个结构体也存在于线程环境块（TEB）中，它是线程结构体的副本，以方便访问线程相关信息。</p>
+    </li>
+    <li>
+        <p><code>KPRCB</code>：KPCR中还包含了一个结构体拓展，即 KPRCB，其中包含了更多有关CPU的信息。</p>
+    </li>
+</ul>
+
+    </p>
+</div>
+
+</body>
+</html>
