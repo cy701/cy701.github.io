@@ -1,14 +1,29 @@
-title: 我的博客
-email: 1826859224@qq.com
-description: >- # 这里可以写描述
-  这是我的个人博客，欢迎访问！
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://cy701.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: 无
-github_username:  cy701
+title: "你的博客标题"
+description: "你的博客描述"
 
-# Build settings
+# 基础URL和仓库URL
+baseurl: "https://github.com/cy701" 
+url: "https://cy701.github.io" 
+
+# 作者信息
+author:
+  name: "你的名字"
+  email: "你的邮箱"
+
+# 构建设置
 markdown: kramdown
 theme: minima
+
+# 社交媒体账号
+twitter_username: "你的Twitter用户名"
+github_username: "你的GitHub用户名"
+
+# 菜单栏配置
+header_pages:
+  - about.md
+  - contact.md
+
+# 插件
 plugins:
   - jekyll-feed
+
