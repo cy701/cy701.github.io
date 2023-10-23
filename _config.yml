@@ -1,11 +1,11 @@
 title: 我的博客
-email: your-email@example.com
+email: 1826859224@qq.com
 description: >- # 这里可以写描述
   这是我的个人博客，欢迎访问！
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://username.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
-github_username:  jekyll
+twitter_username: 无
+github_username:  cy701
 
 # Build settings
 markdown: kramdown
