@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>子页面标题</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            padding: 50px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #162447;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .navbar a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #1f4068;
+        }
+
+        .content {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="#prev-page-url" id="prev">PREV</a>
+    <a href="#next-page-url" id="next">NEXT</a>
+</div>
+
+<div class="content">
+    <!-- 你的内容将显示在这里 -->
+    <h1>跨进程读写内存</h1>
+    <p>
+        <h3>11. 线程的优先级</h3>
+<p>在Windows操作系统中，线程的优先级决定了它们被调度执行的顺序。优先级较高的线程会在优先级较低的线程之前得到执行机会。操作系统通过 <code>KiFindReadyThread</code> 函数从高到低查找就绪线程，优先级较高的线程会先被调度。</p>
+
+<p>为了高效查找就绪线程，操作系统使用了一个位图变量，命名为 <code>_kiReadySummary</code>。每个位表示一个调度链表是否为空，如果链表为空，对应的位就是0，不为空则为1。</p>
+
+<h3>12. 进程挂靠</h3>
+<p>进程挂靠是一种操作，通过它可以将一个线程从一个进程"挂靠"到另一个进程。要找到特定进程的内存，可以执行以下步骤：</p>
+<ol>
+    <li>找到目标进程的页目录表基址（CR3）。</li>
+    <li>将页目录表基址赋值给CR3寄存器，切换到目标进程的内存空间。</li>
+</ol>
+
+<p>线程与进程的关联通常由两个成员记录，一个表示养父母，另一个表示亲生父母。CR3的值由亲生父母提供，它表示线程所属的进程。如果需要进行进程挂靠，可以将CR3的值修改为养父母所属进程的CR3值。这样，线程将切换到养父母的内存空间。</p>
+
+<p>要实现进程挂靠，可以使用函数如 <code>NtReadVirtualMemory</code>，它会修改养父母和CR3的值。但是，如果只修改CR3而不修改养父母，会导致切换线程时CR3被重新赋值，因此需要同时修改这两个值。</p>
+
+<p>可以通过以下步骤实现进程挂靠：</p>
+<ol>
+    <li>修改CR3，将其设置为目标进程的CR3值。</li>
+    <li>关中断，确保不发生线程切换，即不会重新赋值CR3。</li>
+    <li>执行需要的操作。</li>
+    <li>开中断，恢复正常线程切换。</li>
+</ol>
+
+<h3>13. 跨进程读写内存</h3>
+<p>在跨进程读写内存过程中，通常会将目标进程的数据保存在内核空间中高2G的暂存区。不同进程的高2G内核空间是一样的，因此可以方便地进行数据传输。</p>
+
+<p>跨进程读过程如下：</p>
+<ol>
+    <li>切换CR3，将其设置为目标进程的CR3值。</li>
+    <li>将数据复制到高2G的内核暂存区。</li>
+    <li>再次切换CR3，将其设置回原来的值。</li>
+    <li>从高2G的内核暂存区复制数据到目标位置。</li>
+</ol>
+
+<p>跨进程写类似，只是数据流的方向相反。</p>
+
+<p>操作系统提供了函数如 <code>NtReadVirtualMemory</code> 和 <code>NtWriteVirtualMemory</code> 用于跨进程读写内存。</p>
+
+    </p>
+</div>
+
+</body>
+</html>
