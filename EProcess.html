@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EProcess</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            padding: 50px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #162447;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .navbar a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #1f4068;
+        }
+
+        .content {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="#prev-page-url" id="prev">PREV</a>
+    <a href="#next-page-url" id="next">NEXT</a>
+</div>
+
+<div class="content">
+    <!-- 你的内容将显示在这里 -->
+    <h1>EProcess</h1>
+    <p>
+        <h2>进程结构体</h2>
+<p>分配进程本质：创建一个进程结构体，分配内存，每个进程在0环都有一个结构体，EPROCESS，查看该结构体：</p>
+<pre><code>dt _eprocess</code></pre>
+<p><code>peb</code>在三环，也是描述进程</p>
+<ul>
+    <li>
+        <p><code>EPROCESS</code> 里面第一个成员 <code>kprocess</code></p>
+        <ul>
+            <li>
+                <p>如果 <code>kprocess</code> 里面第一个成员为 <code>DISPATCHER_header</code>，则该进程为可等待对象，可以使用 <code>WaitForSingleObject</code></p>
+            </li>
+            <li>
+                <p><code>0x18</code>成员 <code>DirectoryTableBase</code> Uint4E 页目录表基址，找到这张表，就找到了整个进程的物理页，是最终添加到 <code>cr3</code> 里的值，切换进程</p>
+            </li>
+            <li>
+                <p><code>0x38</code> <code>kernelTime</code> <code>0x3c</code> <code>UserTime</code> 在 0-3 环运行的时间</p>
+            </li>
+            <li>
+                <p><code>0x5c</code> <code>Affinity</code> 规定进程在哪个 CPU 上跑 <code>00000011</code> 可以在 0 号和 1 号 CPU 上跑</p>
+            </li>
+            <li>
+                <p><code>0x62</code> <code>BasePriority</code> 基本优先级 线程初始化的优先级</p>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <p><code>EPROCESS</code> 其他成员</p>
+        <ul>
+            <li><code>0x70</code> <code>CreateProcess</code></li>
+            <li><code>0x78</code> <code>ExitProcess</code></li>
+            <li><code>0x84</code> <code>UniqueProcessId</code> pid</li>
+            <li><code>0x88</code> <code>ActiveProcessLinks</code> 双向链表 存储所有正在活动的进程的 <code>EProcess</code> <code>PSActiveProcessHead</code> 该链表的头</li>
+            <li>
+                <p>
+                    <code>dd PSActiveProcessHead</code> 找到链表的头，<code>dd _eprocess</code> 地址（链表头地址）定位的是第一个进程结构体 <code>0x88</code> 的位置
+                </p>
+            </li>
+            <li>
+                <p>这个链表和进程隐藏有关系，把某个进程链表断掉，在任务管理器里面就查不到了</p>
+            </li>
+            <li><code>0x90</code> <code>QuotaUsage</code></li>
+            <li><code>0x9c</code> <code>QuotaPeak</code> 物理页的统计信息</li>
+            <li><code>0xa8</code> <code>CommitCharge</code></li>
+            <li><code>0xac</code> <code>PeakVirtualSize</code></li>
+            <li><code>0xb0</code> <code>VirtualSize</code> 虚拟内存统计信息</li>
+            <li><code>0x11c</code> <code>VadRoot</code> 非常重要 标识低 2G 内存用户空间 0-2G 哪些地址没被占用，指向一棵树，模块隐藏，找到隐藏模块</li>
+            <li><code>0xbc</code> <code>DebugPort</code></li>
+            <li><code>0xc0</code> <code>ExceptionPort</code> 和调试有关 <code>debugport</code> 清零 反调试 桥梁 通信</li>
+            <li><code>0xc4</code> <code>ObjectTable</code> 句柄表 反调试 用了哪些其他的内核对象，查找其他进程的句柄表，是否含有游戏进程的 <code>eprocess</code>，立马报错</li>
+            <li><code>0x174</code> <code>ImageFileName</code> 该进程名称</li>
+            <li><code>0x1a0</code> <code>ActiveThreads</code> 活动线程的数量</li>
+            <li><code>0x1b0</code> <code>peb</code></li>
+            <li>
+                <p><code>peb</code> 结构体中有关成员 <code>0x2</code> <code>BeingDebugged</code> 如果被调试了则置 1</p>
+            </li>
+            <li>
+                <p><code>0xc</code> <code>Ldr</code> 这个子结构体有 3 个双向链表，<code>0x0c-0x1c</code> 第一个表示该模块加载的顺序，第二个，在内存中的顺序，第三个初始化顺序，断链达到模块隐藏目的</p>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+    </p>
+</div>
+
+</body>
+</html>
