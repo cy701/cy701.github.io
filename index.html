@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>我的 GitHub Pages 网站</title>
   <style>
         body {
@@ -417,6 +418,30 @@ p.morning {
 }
 
 
+/* 媒体查询：针对小屏幕设备的样式 */
+@media (max-width: 768px) {
+    .navbar a {
+        display: block;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .sidebar, .content {
+        float: none;
+        width: 100%;
+    }
+
+    .wrapper {
+        transform: scale(0.4);
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%) scale(0.4);
+    }
+}
 
 
 	
