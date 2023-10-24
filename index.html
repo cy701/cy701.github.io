@@ -1,17 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
-  <title>我的 GitHub Pages 网站</title>
+    <title>我的 GitHub Pages 网站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .night-mode {
+            background-color: #333;
+            color: #ccc;
+        }
+
+        .icon {
+            width: 50px;
+            height: 50px;
+        }
+
+        .counter {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .toggle-button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+
+        .toggle-button:hover {
+            background-color: #2980b9;
+        }
+
+        .parallax {
+            background-image: url('path_to_your_image.jpg');
+            height: 500px;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
 <body>
-  <h1>欢迎来到我的网站！</h1>
-  <h2>我会分享一些我的学习过程，主要是有关C C++方面</h2>
-  <h2>我对windows逆向和操作系统感兴趣，分享我学习windows内核以及操作系统的笔记</h2>
-  <h2>先学习xv6操作系统和windows内核的知识，后面如果有机会的话会学习Linux内核</h2>
-  滴水逆向
-  <a href="./ProcessAndThread/windowsProcThread.html"><h3>进程与线程</h3></a>
-  xv6实验
-  <a href="./xv6_exam.pdf"><h3>写一个清屏函数</h3></a>
-  
+
+    <div class="parallax"></div>
+
+    <h1>欢迎来到我的网站！</h1>
+    <h2>我会分享一些我的学习过程，主要是有关C C++方面</h2>
+    <h2>我对windows逆向和操作系统感兴趣，分享我学习windows内核以及操作系统的笔记</h2>
+    <h2>先学习xv6操作系统和windows内核的知识，后面如果有机会的话会学习Linux内核</h2>
+
+    <div class="counter">
+        <p>浏览人数： <span id="visitorCount">加载中...</span></p>
+    </div>
+
+    <button class="toggle-button" onclick="toggleNightMode()">切换日夜模式</button>
+
+    <script>
+        function toggleNightMode() {
+            document.body.classList.toggle('night-mode');
+        }
+
+        // 模拟获取访客计数
+        document.getElementById('visitorCount').innerText = '123'; // 这里可以替换为实际的访客计数代码
+    </script>
+
 </body>
 </html>
