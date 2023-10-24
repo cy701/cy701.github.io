@@ -2,14 +2,6 @@
 <html>
 <head>
   <title>我的 GitHub Pages 网站</title>
-  <style>
-      #visitorCount {
-          background-color: #f0f0f0;
-          padding: 10px;
-          border-radius: 5px;
-          margin: 20px 0;
-      }
-  </style>
 </head>
 <body>
   <h1>欢迎来到我的网站！</h1>
@@ -17,7 +9,7 @@
   <h2>我对windows逆向和操作系统感兴趣，分享我学习windows内核以及操作系统的笔记</h2>
   <h2>先学习xv6操作系统和windows内核的知识，后面如果有机会的话会学习Linux内核</h2>
   
-  <div id="visitorCount">访问人数：加载中...</div>
+  <div id="visitorCount">访问人数：100</div> <!-- 设置一个初始访问计数 -->
   
   滴水逆向
   <a href="./ProcessAndThread/windowsProcThread.html"><h3>进程与线程</h3></a>
@@ -41,9 +33,9 @@
       if (!getCookie('visited')) {
           setCookie('visited', true, 365);
           
-          // 这里是模拟的访问计数，您可能需要从服务器获取和更新实际的访问计数
+          // 增加访问计数
           let visitorCountElement = document.getElementById('visitorCount');
-          let visitorCount = parseInt(visitorCountElement.innerText.split('：')[1]) || 0;
+          let visitorCount = parseInt(visitorCountElement.innerText.split('：')[1]);
           visitorCountElement.innerText = '访问人数：' + (visitorCount + 1);
       }
   </script>
